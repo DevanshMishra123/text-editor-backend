@@ -4,23 +4,26 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 
 const app = express();
-app.use(cors({
-  origin: '*',  
-  methods: ['GET', 'POST'],        
-}))
-const server = http.createServer(app);
-const io = new Server(server); 
 
 app.get('/', (req, res) => {
-  res.send("Editor server is running")
+  res.send("Editor server is running");
+});
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "https://text-editor-bay-zeta.vercel.app", 
+    methods: ["GET", "POST"]
+  }
 });
 
 io.on('connection', (socket) => {
-  console.log('A user connected:', socket.id);
+  console.log('User connected:', socket.id);
 
   socket.on('cursor-moved', (msg) => {
     console.log(msg);
-    socket.broadcast.emit('cursor-moved', msg); 
+    socket.broadcast.emit('cursor-moved', msg);
   });
 
   socket.on('disconnect', () => {
@@ -28,6 +31,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(5000, () => {
-  console.log('Server listening on http://localhost:5000');
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
