@@ -19,8 +19,8 @@ io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
   socket.on('cursor-moved', (msg) => {
-    console.log(msg)
-    io.broadcast.emit('cursor-moved', msg);
+    console.log(msg);
+    socket.broadcast.emit('cursor-moved', msg); 
   });
 
   socket.on('disconnect', () => {
