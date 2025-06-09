@@ -27,6 +27,8 @@ io.on('connection', (socket) => {
 
   socket.broadcast.emit('user-joined', { userId: socket.id });
 
+  socket.emit('welcome', { socketId: socket.id }); 
+
   socket.on('cursor-moved', (msg) => {
     console.log(msg);
 
