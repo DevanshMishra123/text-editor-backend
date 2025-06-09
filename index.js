@@ -41,6 +41,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('cursor-moved', msg);
   });
 
+  socket.on('cursor-update', (msg) => {
+    console.log(msg);
+    socket.broadcast.emit('cursor-update', msg);
+  })
+
   socket.on('disconnect', () => {
     console.log('User disconnected:', socket.id);
     socket.broadcast.emit('user-left', { userId: socket.id });
